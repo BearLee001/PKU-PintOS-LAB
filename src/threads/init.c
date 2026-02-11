@@ -133,6 +133,28 @@ int pintos_init(void)
 		run_actions(argv);
 	} else {
 		// TODO: no command line passed to kernel. Run interactively
+		char cmd[256] = { 0 };
+
+		for (;;) {
+			printf("PKUOS>");
+			char c;
+			uint16_t l = 0;
+			for (;;) {
+				c = input_getc();
+				printf("%c", c);
+				if (c == '\r') {
+					printf("\n");
+					break; /* also 13: [enter](\r) == 13  **Not '\n' !!!** */
+				}
+				cmd[l++] = c;
+				if (l > 10) {
+					printf("command is too long, abort!\n");
+					cmd[l = 0] = 0;
+					break;
+				}
+			}
+			cmd[l] = 0;
+		}
 	}
 
 	/* Finish up. */
