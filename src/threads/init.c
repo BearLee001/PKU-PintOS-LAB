@@ -141,23 +141,30 @@ int pintos_init(void)
 			uint16_t l = 0;
 			for (;;) {
 				c = input_getc();
-				printf("%c", c);
+				putchar(c);
 				if (c == '\r') {
-					printf("\n");
+					putchar('\n');
 					break; /* also 13: [enter](\r) == 13  **Not '\n' !!!** */
 				}
 				cmd[l++] = c;
 				if (l > 255) {
-					printf("command is too long, abort!\n");
+					puts("command is too long, abort!\n");
 					cmd[l = 0] = 0;
 					break;
 				}
 			}
 			cmd[l] = 0;
-			printf("%s\n", (char *)cmd);
+			if (strcmp((const char *)cmd, "whoami") == 0) {
+				printf("Hello, Zile Xiong!\n");
+			} else if (strcmp((const char *)cmd, "exit") == 0) {
+				goto _exit;
+			} else {
+				printf("invalid command: %s\n", (char *)cmd);
+			}
 		}
 	}
 
+_exit:
 	/* Finish up. */
 	shutdown();
 	thread_exit();
