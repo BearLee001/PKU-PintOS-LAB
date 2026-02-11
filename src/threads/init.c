@@ -147,13 +147,14 @@ int pintos_init(void)
 					break; /* also 13: [enter](\r) == 13  **Not '\n' !!!** */
 				}
 				cmd[l++] = c;
-				if (l > 10) {
+				if (l > 255) {
 					printf("command is too long, abort!\n");
 					cmd[l = 0] = 0;
 					break;
 				}
 			}
 			cmd[l] = 0;
+			printf("%s\n", (char *)cmd);
 		}
 	}
 
